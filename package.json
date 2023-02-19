@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "full-app": "ts-node index.ts && cd app && npm start"
+    "full-app": "npx concurrently \"ts-node index.ts\" \"cd app && npm run start\""
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
+    "concurrently": "^7.6.0",
     "eslint": "^8.34.0",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1",
