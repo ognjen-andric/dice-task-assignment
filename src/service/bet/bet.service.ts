@@ -5,12 +5,14 @@ import { User } from "../../model/user.model";
 import { IBetRepository } from "../../repository/bet/bet.repository";
 import { BetRepository } from "../../repository/bet/bet.sqlite.repository";
 import { IUserRepository } from "../../repository/user/user.repository";
+import { Logger } from "../logger/logger.service";
 
 @injectable()
 export class BetService {
   constructor(
     @inject(IUserRepository) private userRepository: IUserRepository,
-    @inject(IBetRepository) private betRepository: BetRepository
+    @inject(IBetRepository) private betRepository: BetRepository,
+    @inject(Logger) private logger: Logger
   ) {}
 
   private hasWon(input: BetInput): boolean {
@@ -77,5 +79,23 @@ export class BetService {
         reject(e);
       }
     });
+  }
+
+  async getBet(id: number): Promise<Bet | null> {
+    try {
+      return await this.betRepository.getBet(id);
+    } catch (e) {
+      this.logger.error(JSON.stringify(e));
+      return null;
+    }
+  }
+
+  async getBetList(): Promise<Bet[]> {
+    try {
+      return await this.betRepository.getBetList();
+    } catch (e) {
+      this.logger.error(JSON.stringify(e));
+      return [];
+    }
   }
 }

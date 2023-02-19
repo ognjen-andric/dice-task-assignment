@@ -1,8 +1,8 @@
 import { Bet, BetWithoutId } from "../../model/bet.model";
 
 export interface IBetRepository {
-  //   getBet(id: number): Promise<Bet>;
-  //   getBetList(): Promise<Bet[]>;
+  getBet(id: number): Promise<Bet | null>;
+  getBetList(): Promise<Bet[]>;
 
   insertBet(bet: BetWithoutId): Promise<Bet>;
 }

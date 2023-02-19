@@ -15,6 +15,7 @@ export const schema = `#graphql
 
     extend type Query{
         getBet(id: Int!) : Bet
+        getBetList: [Bet!]!
     }
 
     extend type Mutation{

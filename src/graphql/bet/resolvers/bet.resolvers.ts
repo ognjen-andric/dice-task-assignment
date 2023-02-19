@@ -2,11 +2,20 @@ import { container } from "../../../config/dependency-injection/container";
 import { BetInput } from "../../../model/bet.model";
 import { ContextValue } from "../../../model/context.graphql.model";
 import { BetService } from "../../../service/bet/bet.service";
+import { GraphQLError } from "graphql";
 
 export const resolvers = {
   Query: {
-    getBet: () => {
-      return null;
+    getBet: async (_: any, args: { id: number }) => {
+      const { id } = args;
+      const betService = container.resolve(BetService);
+      const bet = await betService.getBet(id);
+      if (!bet) throw new GraphQLError("Bet could not be found.");
+      return bet;
+    },
+    getBetList: async () => {
+      const betService = container.resolve(BetService);
+      return await betService.getBetList();
     },
   },
   Mutation: {

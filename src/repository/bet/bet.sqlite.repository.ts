@@ -57,4 +57,15 @@ export class BetRepository implements IBetRepository {
     const b = await this._source.create(data);
     return b as unknown as Bet;
   }
+
+  async getBet(id: number): Promise<Bet | null> {
+    const bet = await this._source.findByPk(id);
+    if (!bet) return null;
+    return bet as unknown as Bet;
+  }
+
+  async getBetList(): Promise<Bet[]> {
+    const bets = await this._source.findAll();
+    return (bets as unknown as Bet[]) || [];
+  }
 }

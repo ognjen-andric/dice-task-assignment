@@ -49,19 +49,15 @@ export class UserRepository implements IUserRepository {
     this.logger.log("Populated table User.");
   }
 
-  getUser(id: number): Promise<User | null> {
-    return new Promise(async (resolve, reject) => {
-      const user = await this._source.findByPk(id);
-      if (!user) reject(null);
-      resolve(user as unknown as User);
-    });
+  async getUser(id: number): Promise<User | null> {
+    const user = await this._source.findByPk(id);
+    if (!user) return null;
+    return user as unknown as User;
   }
 
-  getUserList(): Promise<User[]> {
-    return new Promise(async (resolve) => {
-      const users = await this._source.findAll();
-      resolve(users as unknown as User[]);
-    });
+  async getUserList(): Promise<User[]> {
+    const users = await this._source.findAll();
+    return (users as unknown as User[]) || [];
   }
 
   async updateBalance(user: User, newBalance: number): Promise<User> {
