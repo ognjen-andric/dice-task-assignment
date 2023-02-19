@@ -30,3 +30,7 @@ We wish to implement transactions on every mutation that involves sensitive data
 If an error occurs, users balance does not change and neither a game is created.
 
 If error does not occur, changes are commited. While commiting changes, it is important to know how transactions actually work in the background as you can still end up with missing/broken data even with Transactions if applied incorrectly.
+
+## Relations
+
+Also, another thing that should be implemented here are relations between tables. That will speed up our queries once our tables get large due to indexing.
