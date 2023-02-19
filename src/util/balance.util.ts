@@ -1,6 +1,6 @@
 import { User } from "../model/user.model";
 
-export const BalanceHelper = {
+export const BalanceUtil = {
   deductBalance: (user: User, amount: number) => {
     console.log("Deduction");
     console.log(user.balance);

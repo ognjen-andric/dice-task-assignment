@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { BalanceHelper } from "../../helper/balance.helper";
+import { BalanceUtil } from "../../util/balance.util";
 import { Bet, BetInput, BetOutcome } from "../../model/bet.model";
 import { User } from "../../model/user.model";
 import { IBetRepository } from "../../repository/bet/bet.repository";
@@ -59,7 +59,7 @@ export class BetService {
   async createBet(input: BetInput, user: User): Promise<Bet> {
     return new Promise(async (resolve, reject) => {
       try {
-        const newBalance = BalanceHelper.deductBalance(user, input.amount);
+        const newBalance = BalanceUtil.deductBalance(user, input.amount);
         const updatedUser = await this.userRepository.updateBalance(
           user,
           newBalance
@@ -68,7 +68,7 @@ export class BetService {
         const outcome = this.getOutcome(input);
         const bet = await this.insertNewBet(input, outcome, updatedUser);
         if (outcome.hasWon) {
-          const payoutBalance = BalanceHelper.addBalance(
+          const payoutBalance = BalanceUtil.addBalance(
             updatedUser,
             outcome.payout
           );
