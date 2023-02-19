@@ -7,5 +7,6 @@ export const schema = `#graphql
 
     extend type Query {
         getUser(id: Int!) : User
+        getUserList: [User!]!
     }
 `;

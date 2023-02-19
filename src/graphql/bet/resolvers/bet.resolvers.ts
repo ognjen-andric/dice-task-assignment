@@ -1,3 +1,6 @@
+import { container } from "../../../config/dependency-injection/container";
+import { BetService } from "../../../service/bet/bet.service";
+
 export const resolvers = {
   Query: {
     getBet: () => {
@@ -5,8 +8,9 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createBet: (_: any, input: any) => {
-      console.log(input);
+    createBet: async (_: any, input: any) => {
+      const betService = container.resolve(BetService);
+      await betService.createBet();
       return null;
     },
   },
