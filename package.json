@@ -27,6 +27,9 @@
   },
   "dependencies": {
     "@apollo/server": "^4.4.0",
-    "graphql": "^16.6.0"
+    "graphql": "^16.6.0",
+    "graphql-tools": "^8.3.18",
+    "sequelize": "^6.28.0",
+    "sqlite3": "^5.1.4"
   }
 }
