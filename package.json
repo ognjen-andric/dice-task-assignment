@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node index.ts"
+    "full-app": "ts-node index.ts && cd app && npm start"
   },
   "repository": {
     "type": "git",

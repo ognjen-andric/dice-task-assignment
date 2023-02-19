@@ -10,7 +10,9 @@ Setup process :
 
 - Clone the repository
 - Once inside, run `npm install` in order to install all dependencies
-- Run `npm start` to run the BE part of the dice betting assingment
+- After that, enter `app` folder and run `npm install` there as well.
+- Go back to root of the project.
+- Run `npm run full-app` to run the BE part of the dice betting assingment
 
 ## Authorization
 
@@ -40,3 +42,12 @@ If error does not occur, changes are commited. While commiting changes, it is im
 ## Relations
 
 Also, another thing that should be implemented here are relations between tables. That will speed up our queries once our tables get large due to indexing.
+
+## UI
+
+Wrote UI in like 5 minutes just to have a bit nicer visualization of the game itself. Only bet feature is supported as I am too tired to actually focus on the UI itself and its functionality, this was just a bonus as it felt empty without it.
+
+## URLS :
+
+- localhost:4000 -> BE
+- localhost:3000 -> FE
