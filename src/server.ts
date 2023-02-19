@@ -1,10 +1,10 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { buildSchema } from "graphql";
-import { betDefinition } from "../graphql/bet";
-import { schema } from "../graphql/default.schema";
-import { userDefinition } from "../graphql/user";
-import { contextAuthMiddleware } from "../middleware/context-auth/context-auth.middleware";
+import { betDefinition } from "./graphql/bet";
+import { schema } from "./graphql/default.schema";
+import { userDefinition } from "./graphql/user";
+import { contextAuthMiddleware } from "./middleware/context-auth/context-auth.middleware";
 
 const getDefaultSchema = () => {
   //As I haven't worked with BE GraphQL
@@ -35,7 +35,7 @@ const getResolvers = () => {
   };
 };
 
-export const startGraphql = async () => {
+export const startGraphqlServer = async () => {
   const server = new ApolloServer({
     typeDefs: getDefinitions(),
     resolvers: getResolvers(),
