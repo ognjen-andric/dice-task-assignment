@@ -68,4 +68,16 @@ export class BetRepository implements IBetRepository {
     const bets = await this._source.findAll();
     return (bets as unknown as Bet[]) || [];
   }
+
+  async getBestBetPerUser(limit?: number): Promise<Bet[]> {
+    const result = await this._source.findAll({
+      group: "userId",
+      order: [
+        ["payout", "DESC"],
+        ["betAmount", "DESC"],
+      ],
+      limit,
+    });
+    return result as unknown as Bet[];
+  }
 }

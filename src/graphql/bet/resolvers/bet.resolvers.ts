@@ -17,6 +17,11 @@ export const resolvers = {
       const betService = container.resolve(BetService);
       return await betService.getBetList();
     },
+    getBestBetPerUser: async (_: any, args: { limit?: number }) => {
+      const { limit } = args;
+      const betService = container.resolve(BetService);
+      return await betService.getBestBetPerUser(limit);
+    },
   },
   Mutation: {
     createBet: async (

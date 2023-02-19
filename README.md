@@ -1,4 +1,4 @@
-# Please read :)
+# Please read thoroughly :)
 
 ## Dice betting task assignment
 
@@ -11,6 +11,12 @@ Setup process :
 - Clone the repository
 - Once inside, run `npm install` in order to install all dependencies
 - Run `npm start` to run the BE part of the dice betting assingment
+
+## Authorization
+
+- To authorize yourself to do mutations, you will need to send an authorization header with a value that represents `User.id`. There is not strict authentication system required so this is what I've implemented so that we can switch which users are making the bets.
+
+- To see possible user ids, I am automatically populating `User` table [here](/src/repository/user/user.sqlite.repository.ts) so by default you can choose between users `1 - Foo` and `2 - Bar`.
 
 ## Testing
 

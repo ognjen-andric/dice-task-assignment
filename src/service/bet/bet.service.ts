@@ -98,4 +98,8 @@ export class BetService {
       return [];
     }
   }
+
+  async getBestBetPerUser(limit?: number): Promise<Bet[]> {
+    return await this.betRepository.getBestBetPerUser(limit);
+  }
 }
