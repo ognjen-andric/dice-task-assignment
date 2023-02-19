@@ -6,16 +6,16 @@ import { IUserRepository } from "./user.repository";
 
 @injectable()
 export class UserRepository implements IUserRepository {
-  private readonly _source: ModelStatic<Model>;
+  readonly _source: ModelStatic<Model>;
+  private readonly tableName = "User";
   constructor(@inject(Logger) private logger: Logger) {
     const sequelize = new Sequelize("sqlite::memory:?cache=shared");
 
-    this._source = sequelize.define("User", {
+    this._source = sequelize.define(this.tableName, {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-        allowNull: false,
       },
       name: {
         type: DataTypes.STRING,
@@ -30,7 +30,7 @@ export class UserRepository implements IUserRepository {
 
   async synchronize() {
     await this._source.sync();
-    this.logger.log("Synchronized database with table User");
+    this.logger.log(`Synchronized database with table ${this.tableName}`);
   }
 
   async populate() {
@@ -64,9 +64,17 @@ export class UserRepository implements IUserRepository {
     });
   }
 
-  updateBalance(user: User, newBalance: number): Promise<void> {
-    return new Promise((resolve, reject) => {
-      reject("Not implemented");
-    });
+  async updateBalance(user: User, newBalance: number): Promise<User> {
+    await this._source.update(
+      {
+        balance: newBalance,
+      },
+      {
+        where: {
+          id: user.id,
+        },
+      }
+    );
+    return (await this.getUser(user.id)) as User;
   }
 }

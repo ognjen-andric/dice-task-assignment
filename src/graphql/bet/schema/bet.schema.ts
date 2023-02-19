@@ -10,6 +10,7 @@ export const schema = `#graphql
 
     input BetInput {
         amount: Float!
+        chance: Float!
     }
 
     extend type Query{

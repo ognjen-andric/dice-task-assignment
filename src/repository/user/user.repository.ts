@@ -4,7 +4,7 @@ import { User } from "../../model/user.model";
 export interface IUserRepository {
   getUser(id: number): Promise<User | null>;
   getUserList(): Promise<User[]>;
-  updateBalance(user: User, newBalance: Balance): Promise<void>;
+  updateBalance(user: User, newBalance: Balance): Promise<User>;
 }
 
 export const IUserRepository = Symbol("IUserRepository");

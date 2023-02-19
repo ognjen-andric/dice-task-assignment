@@ -4,6 +4,7 @@ import { buildSchema } from "graphql";
 import { betDefinition } from "../graphql/bet";
 import { schema } from "../graphql/default.schema";
 import { userDefinition } from "../graphql/user";
+import { contextAuthMiddleware } from "../middleware/context-auth/context-auth.middleware";
 
 const getDefaultSchema = () => {
   //As I haven't worked with BE GraphQL
@@ -40,7 +41,11 @@ export const startGraphql = async () => {
     resolvers: getResolvers(),
   });
 
-  const { url } = await startStandaloneServer(server);
+  const { url } = await startStandaloneServer(server, {
+    context: async ({ req }) => {
+      return await contextAuthMiddleware(req);
+    },
+  });
 
   console.log(`Running Apollo GraphQL at : ${url}`);
 };
