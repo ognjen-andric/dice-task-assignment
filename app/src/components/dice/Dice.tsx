@@ -84,6 +84,7 @@ export const Dice = () => {
           }}
           type={"range"}
         />
+        <span>{chance}%</span>
       </div>
 
       <button onClick={sendDice}>Roll :) </button>
@@ -94,8 +95,8 @@ export const Dice = () => {
         .map((r) => (
           <p key={r.id}>
             {" "}
-            ID : {r.id} - Wagered {r.betAmount} with chance {r.chance} and
-            received {r.payout} because you {r.win ? "Won :D" : "Lost :("}
+            ID : {r.id} - Wagered {r.betAmount} with {r.chance}% chance and
+            received {r.payout} because you <span className={`${r.win} colored`}>{r.win ? "won 😊" : "lost 😔"}</span>
           </p>
         ))}
     </div>
