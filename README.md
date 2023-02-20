@@ -53,6 +53,12 @@ Also, another thing that should be implemented here are relations between tables
 
 Wrote UI in like 5 minutes just to have a bit nicer visualization of the game itself. Only bet feature is supported as I am too tired to actually focus on the UI itself and its functionality, this was just a bonus as it felt empty without it.
 
+## OOP
+There are some repetitive steps which could be prevented with correct implementation of inheritance and/or abstraction but it is usually time consuming not for creation but for designing, therefore skipped to get the functionality working.
+
+## Dependency Injection
+Added `tsyringe` to the project to help me out with `DI`, in case we want to implement `Sequelize` to work with a real database, we can work on it separately without disrupting existing code and just plug&play new repository once ready.
+
 ## URLS :
 
 - localhost:4000 -> BE
