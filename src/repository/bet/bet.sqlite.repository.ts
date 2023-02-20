@@ -75,6 +75,13 @@ export class BetRepository implements IBetRepository {
      * Performance of this is not best and should not be done like this.
      * This is the approach because my previous solution with using the sequelize to handle logic gave wrong results for whatever reason.
      * Will look into this one if I find time today, if not, at least know that I am aware that better solution would be to use ORM features for it
+     * 
+     * Performance downsides of this :
+     * - Gets all content (VERY slow on large tables, sometimes impossible)
+     * - Loops through them
+     * - Loops through them 2x :(
+     * 
+     * At least in my head, it should be possible to achieve this with only SQL, but no time to explore it tbh
      */
     const results: Record<string, Bet> = {};
     const games = await this._source.findAll();
