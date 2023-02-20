@@ -2,8 +2,9 @@ import { gql } from "@apollo/client/core";
 import { useState, useEffect } from "react";
 import { getClient } from "../../client/apollo-client";
 import { Balance } from "../balance/Balance";
+import { DiceResult } from "./DiceResult";
 
-type Bet = {
+export type Bet = {
   betAmount: number;
   chance: number;
   id: string;
@@ -18,8 +19,25 @@ export const Dice = () => {
   const [chance, setChance] = useState<number>(45);
   const [balance, setBalance] = useState<number>(0);
   const [results, setResults] = useState<Bet[]>([]);
+  const [nextHash, setNextHash] = useState<string>("Loading hash...");
   console.log(amount, chance);
 
+  const getNewHash = async () => {
+    try {
+      const client = getClient(userId);
+      const res = await client.query({
+        query: gql`
+        query GetNextFairness {
+          getNextFairness {
+            hash,
+          }
+        }`
+      });
+      setNextHash(res.data.getNextFairness.hash);
+    } catch (e) {
+      alert(e);
+    }
+  }
   const sendDice = async () => {
     try {
       const client = getClient(userId);
@@ -52,7 +70,6 @@ export const Dice = () => {
       alert(e);
     }
   };
-
   const getBalance = async () => {
     try {
       const client = getClient(userId);
@@ -74,11 +91,19 @@ export const Dice = () => {
     }
   }
 
-  useEffect(() => {getBalance()}, [
+  useEffect(() => {
+    getBalance();
+    getNewHash();
+  }, [
     results
   ]);
+
+  useEffect(() => {
+    getNewHash();
+  }, []);
   return (
     <div>
+      <p>Next hash : {nextHash}</p>
       <Balance amount={balance}/>
       <div>
         <span>User ID : </span>{" "}
@@ -120,11 +145,7 @@ export const Dice = () => {
       {results
         .sort((a, b) => parseInt(b.id) - parseInt(a.id))
         .map((r) => (
-          <p key={r.id}>
-            {" "}
-            ID : {r.id} - Wagered {r.betAmount} with {r.chance}% chance and
-            received {r.payout} because you <span className={`${r.win} colored`}>{r.win ? "won 😊" : "lost 😔"}</span>
-          </p>
+          <DiceResult bet={r} userId={userId}/>
         ))}
     </div>
   );

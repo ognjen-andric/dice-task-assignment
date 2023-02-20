@@ -3,6 +3,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { buildSchema } from "graphql";
 import { betDefinition } from "./graphql/bet";
 import { schema } from "./graphql/default.schema";
+import { fairnessDefinition } from "./graphql/fairness";
 import { userDefinition } from "./graphql/user";
 import { contextAuthMiddleware } from "./middleware/context-auth/context-auth.middleware";
 
@@ -18,6 +19,7 @@ const getDefinitions = () => {
     getDefaultSchema(),
     betDefinition.schema,
     userDefinition.schema,
+    fairnessDefinition.schema
   ];
   return buildSchema(schemas.join("\n"));
 };
@@ -27,6 +29,7 @@ const getResolvers = () => {
     Query: {
       ...userDefinition.resolvers.Query,
       ...betDefinition.resolvers.Query,
+      ...fairnessDefinition.resolvers.Query
     },
     Mutation: {
       ...userDefinition.resolvers.Mutation,
