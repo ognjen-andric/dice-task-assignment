@@ -20,6 +20,12 @@ Setup process :
 
 - To see possible user ids, I am automatically populating `User` table [here](/src/repository/user/user.sqlite.repository.ts) so by default you can choose between users `1 - Foo` and `2 - Bar`.
 
+## Floating
+Computers in general are really bad with floats (0.1+0.2 example in JS) and it takes large amount of effort to ensure operations on floats are done correctly.
+To prevent that, I would suggest using integers as a representation number. E.g. 100.32$ -> 10032 and then manipulate the data with full integer which is much easier and accurate than floats.
+
+Later on, while displaying amounts, we would just do `amount`/`100` to ensure correct values is displayed.
+
 ## Testing
 
 Due to limited time, I am unsure if I will manage to write detailed tests with decent mocks.
