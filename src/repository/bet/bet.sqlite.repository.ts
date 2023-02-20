@@ -54,8 +54,9 @@ export class BetRepository implements IBetRepository {
       payout,
       win,
     };
-    const b = await this._source.create(data);
-    return b as unknown as Bet;
+    const b = await this._source.create(data) as unknown as Bet;
+    this.logger.log(`Inserted new bet by id : ${b.id}`);
+    return b
   }
 
   async getBet(id: number): Promise<Bet | null> {

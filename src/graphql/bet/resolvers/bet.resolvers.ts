@@ -29,11 +29,12 @@ export const resolvers = {
       args: { input: BetInput },
       contextValue: ContextValue
     ) => {
-      const { input } = args;
-      const betService = container.resolve(BetService);
       if (!contextValue.user) {
         throw new Error("You must be logged in to do that.");
       }
+      
+      const { input } = args;
+      const betService = container.resolve(BetService);
       return await betService.createBet(input, contextValue.user);
     },
   },

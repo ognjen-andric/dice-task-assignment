@@ -3,22 +3,27 @@ import { BalanceUtil } from "../../util/balance.util";
 import { Bet, BetInput, BetOutcome } from "../../model/bet.model";
 import { User } from "../../model/user.model";
 import { IBetRepository } from "../../repository/bet/bet.repository";
-import { BetRepository } from "../../repository/bet/bet.sqlite.repository";
 import { IUserRepository } from "../../repository/user/user.repository";
 import { Logger } from "../logger/logger.service";
+import { IFairnessRepository } from "../../repository/fairness/fairness.repository";
+import { FinishedFairness, ShownFairness } from "../../model/fairness.model";
 
 @injectable()
 export class BetService {
   constructor(
     @inject(IUserRepository) private userRepository: IUserRepository,
-    @inject(IBetRepository) private betRepository: BetRepository,
+    @inject(IBetRepository) private betRepository: IBetRepository,
+    @inject(IFairnessRepository) private fairnessRepository: IFairnessRepository,
     @inject(Logger) private logger: Logger
   ) {}
 
-  private hasWon(input: BetInput): boolean {
+  private async getHash(user: User): Promise<ShownFairness> {
+    return await this.fairnessRepository.getHashFromUserId(user.id);
+  }
+
+  private hasWon(input: BetInput, hash: ShownFairness): boolean {
     const usersTickets = input.chance * 100;
-    const winningTicket = Math.floor(Math.random() * 10000);
-    if (winningTicket <= usersTickets) return true;
+    if (hash.result <= usersTickets) return true;
     return false;
   }
 
@@ -26,8 +31,8 @@ export class BetService {
     return (input.amount * 100) / input.chance;
   }
 
-  private getOutcome(input: BetInput): BetOutcome {
-    const hasWon = this.hasWon(input);
+  private getOutcome(input: BetInput, hash: ShownFairness): BetOutcome {
+    const hasWon = this.hasWon(input, hash);
     if (!hasWon) {
       return {
         hasWon,
@@ -65,7 +70,8 @@ export class BetService {
           newBalance
         );
 
-        const outcome = this.getOutcome(input);
+        const hash = await this.getHash(user);
+        const outcome = this.getOutcome(input, hash);
         const bet = await this.insertNewBet(input, outcome, updatedUser);
         if (outcome.hasWon) {
           const payoutBalance = BalanceUtil.addBalance(
@@ -74,6 +80,15 @@ export class BetService {
           );
           await this.userRepository.updateBalance(user, payoutBalance);
         }
+        const newHash: FinishedFairness = {
+          ...hash,
+          id: hash.id,
+          gameId: bet.id
+        };
+        await this.fairnessRepository.updateHash(newHash);
+        await this.fairnessRepository.insertNewHash({
+          userId: bet.userId
+        })
         resolve(bet);
       } catch (e) {
         reject(e);
