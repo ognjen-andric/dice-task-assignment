@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client/core";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getClient } from "../../client/apollo-client";
+import { Balance } from "../balance/Balance";
 
 type Bet = {
   betAmount: number;
@@ -15,10 +16,11 @@ export const Dice = () => {
   const [userId, setUserId] = useState<number>(1);
   const [amount, setAmount] = useState<number>(100);
   const [chance, setChance] = useState<number>(45);
+  const [balance, setBalance] = useState<number>(0);
   const [results, setResults] = useState<Bet[]>([]);
   console.log(amount, chance);
 
-  const sendDice = async (e: any) => {
+  const sendDice = async () => {
     try {
       const client = getClient(userId);
       const res = await client.mutate({
@@ -51,8 +53,33 @@ export const Dice = () => {
     }
   };
 
+  const getBalance = async () => {
+    try {
+      const client = getClient(userId);
+      const res = await client.query({
+        query: gql`
+          query GetUser($getUserId: Int!) {
+            getUser(id: $getUserId) {
+              balance
+            }
+          }
+        `,
+        variables: {
+          getUserId: userId
+        }
+      });
+      setBalance(res.data.getUser.balance);
+    } catch (e) {
+      alert(e);
+    }
+  }
+
+  useEffect(() => {getBalance()}, [
+    results
+  ]);
   return (
     <div>
+      <Balance amount={balance}/>
       <div>
         <span>User ID : </span>{" "}
         <input
